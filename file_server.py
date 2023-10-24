@@ -18,7 +18,7 @@ def busca_codigo(pos: int) -> str:
 
 if __name__ == '__main__':
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_address = ('localhost', 5001)
+    server_address = ('0.0.0.0', 5001)
 
     print(f"Iniciando servidor en: {server_address[0]}:{server_address[1]}")
     sock.bind(server_address)
@@ -28,8 +28,8 @@ if __name__ == '__main__':
 
     while True:
         conn, client_address = sock.accept()
-        print(f"Conexion desde {client_address[0]}:{client_address[1]}")
-
+        # print(f"Conexion desde {client_address[0]}:{client_address[1]}")
+        inicio_conexion = time.perf_counter()
         try:
             while True:
                 dato = conn.recv(SOCK_BUFFER)
@@ -37,7 +37,7 @@ if __name__ == '__main__':
                 if not dato:
                     break
                 try:
-                    print(f"Recibimos posicion: {dato}")
+                    # print(f"Recibimos posicion: {dato}")
                     inicio_archivo = time.perf_counter()
                     codigo = busca_codigo(int(dato.decode('utf-8')))
                     fin_archivo = time.perf_counter()
@@ -49,5 +49,8 @@ if __name__ == '__main__':
         except ConnectionResetError:
             print("El cliente cerro la conexion de manera abrupta")
         finally:
-            print("Cerrando la conexion")
+            # print("Cerrando la conexion")
             conn.close()
+            fin_conexion = time.perf_counter()
+            print(f"Tiempo de lectura de archivo: {fin_archivo - inicio_archivo} segundos")
+            print(f"Tiempo de conexion: {fin_conexion - inicio_conexion} segundos")
