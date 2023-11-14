@@ -1,17 +1,24 @@
 import time
 import concurrent.futures
+from threading import Lock
 
 
 class FakeDatabase:
     def __init__(self):
         self.value = 0
+        self._lock = Lock()
     
     def update(self, name):
         print(f"Thread {name}: iniciando la actualizacion")
-        local_copy = self.value
-        local_copy += 1
-        time.sleep(0.1)        
-        self.value = local_copy
+        print(f"Thread {name} a punto de adquirir el lock")
+        with self._lock:
+            print(f"Thread {name} ha adquirido el lock")
+            local_copy = self.value
+            local_copy += 1
+            time.sleep(0.1)        
+            self.value = local_copy
+            print(f"Thread {name} a punto de liberar el lock")
+        print(f"Thread {name} ha liberado el lock")
         print(f"Thread {name}: finalizando la actualizacion")
 
 
