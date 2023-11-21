@@ -5,7 +5,7 @@ proc = 4
 
 tareas = 4
 
-def potencia(n: int, div: int = tareas) -> int:
+def potencia(n: int, div: int) -> int:
     pot = 1
 
     rango = n // div
@@ -18,9 +18,9 @@ def potencia(n: int, div: int = tareas) -> int:
 
 if __name__ == "__main__":
     inicio = time.perf_counter()
-    args = [100_000] * tareas
+    args = [[100_000, tareas]] * tareas
     p = Pool(processes=proc)
-    p1 = p.map(potencia, args)
+    p1 = p.starmap(potencia, args)
     p.close()
     p.join()
 
