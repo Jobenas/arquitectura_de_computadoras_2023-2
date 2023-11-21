@@ -3,9 +3,15 @@ import time
 
 CUENTA = 50_000_000
 
+num_cuentas = 0
+
 def cuenta(n):
+    global num_cuentas
+    num_cuentas += 1
     while n > 0:
         n -= 1
+
+    print(f"Numero de cuentas: {num_cuentas}")
 
 
 if __name__ == "__main__":
